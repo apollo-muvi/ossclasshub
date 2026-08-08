@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build
+dist/
+dist-ssr/
+build/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+# Database
+*.db
+
+# Runtime uploads
+api/uploads/
+
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (future backend)
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+
+# Misc
+.cache/
+.temp/
+
+# Agent config (not for public repo)
+AGENTS.md
