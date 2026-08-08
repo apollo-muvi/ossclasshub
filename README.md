@@ -44,8 +44,8 @@ node --version       # 要看到 v20 以上
 ### 第一步：下載程式碼
 
 ```bash
-git clone https://github.com/apollo-muvi/classhub-oss.git
-cd classhub-oss
+git clone https://github.com/apollo-muvi/ossclasshub.git
+cd ossclasshub
 ```
 
 如果沒有 git，先安裝：`sudo apt install git -y`
@@ -59,7 +59,7 @@ cd classhub-oss
 repo 附了一支設定腳本，會自動複製 `.env.example` 並產生安全的加密金鑰：
 
 ```bash
-cd classhub-oss
+cd ossclasshub
 python3 setup-env.py
 ```
 
@@ -75,7 +75,7 @@ python3 setup-env.py
 #### 方式 B：手動操作
 
 ```bash
-cd classhub-oss
+cd ossclasshub
 cp .env.example api/.env
 ```
 
@@ -98,7 +98,7 @@ python3 -c "import secrets; print(secrets.token_hex(32))"
 repo 附有一鍵部署腳本，會同時啟動後端和前端，不需要開兩個終端機視窗：
 
 ```bash
-cd classhub-oss
+cd ossclasshub
 ./deploy-classhub.sh start
 ```
 
@@ -190,7 +190,7 @@ ClassHub OSS status:
 PORT_API=8100          # 後端 port
 PORT_WEB=5174          # 前端 port
 DB_PATH=/tmp/classhub-oss.db   # 資料庫檔案路徑
-REPO_DIR=/home/you/classhub-oss  # repo 位置
+REPO_DIR=/home/you/ossclasshub  # repo 位置
 PID_DIR=/tmp/classhub-pids      # PID 存放目錄
 ```
 
@@ -204,13 +204,13 @@ PID_DIR=/tmp/classhub-pids      # PID 存放目錄
 
 ```bash
 # 視窗 1：後端
-cd classhub-oss/api
+cd ossclasshub/api
 python3 -m venv .venv
 . .venv/bin/activate            # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 
 # 視窗 2：前端
-cd classhub-oss/web
+cd ossclasshub/web
 npm install
 ```
 
@@ -218,12 +218,12 @@ npm install
 
 ```bash
 # 視窗 1：啟動後端
-cd classhub-oss/api
+cd ossclasshub/api
 . .venv/bin/activate            # Windows: .venv\Scripts\activate
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8100
 
 # 視窗 2：啟動前端
-cd classhub-oss/web
+cd ossclasshub/web
 npm run dev -- --host 0.0.0.0 --port 5174
 ```
 
@@ -289,9 +289,9 @@ After=network.target
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/opt/classhub-oss/api
-EnvironmentFile=/opt/classhub-oss/api/.env
-ExecStart=/opt/classhub-oss/api/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8100
+WorkingDirectory=/opt/ossclasshub/api
+EnvironmentFile=/opt/ossclasshub/api/.env
+ExecStart=/opt/ossclasshub/api/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8100
 Restart=always
 RestartSec=5
 
@@ -327,7 +327,7 @@ cd web && npm run build
 
 ### 事前準備
 
-1. 一個 Google 帳號（建議用專用的服務帳號，不要用個人帳號）
+1. 準備一個 Google Cloud Project，用來建立 ClassHub 的 OAuth 2.0 Web Client。完成系統設定後，由實際使用 Google Drive 的 ClassHub 管理者透過「Connect Google Drive」授權自己的 Google 帳號；不需要建立 Google Service Account。
 2. 建立 Google OAuth 2.0 憑證
 
 ### 第一步：建立 Google OAuth 憑證
@@ -622,7 +622,7 @@ sqlite3 /path/to/classhub.db ".backup /path/to/backup/classhub-$(date +%Y%m%d).d
 
 ```bash
 # crontab -e
-0 3 * * * sqlite3 /opt/classhub-oss/api/classhub.db ".backup /backup/classhub-$(date +\%Y\%m\%d).db"
+0 3 * * * sqlite3 /opt/ossclasshub/api/classhub.db ".backup /backup/classhub-$(date +\%Y\%m\%d).db"
 ```
 
 如果用了 Google Drive 存圖片，圖片的備份在 Google Drive 端。本地 `uploads/` 目錄也建議定期備份（存放 OAuth 前上傳的舊圖片）。
@@ -630,7 +630,7 @@ sqlite3 /path/to/classhub.db ".backup /path/to/backup/classhub-$(date +%Y%m%d).d
 ### 更新
 
 ```bash
-cd classhub-oss
+cd ossclasshub
 git pull
 cd api && . .venv/bin/activate && pip install -e ".[dev]"
 cd ../web && npm install
